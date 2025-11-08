@@ -1,1 +1,29 @@
 
+name: Deploy & Verify Token (Polygon + Mumbai)
+
+on:
+  push:
+    branches: [ main, test ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile contracts
+        run: npx hardhat compile
+
+      - name: Deploy and verify
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
